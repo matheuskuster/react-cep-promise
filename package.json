@@ -1,13 +1,14 @@
 {
   "name": "react-cep-promise",
   "version": "1.0.0",
-  "description": "A React wrapper for the cep-promise library",
+  "description": "A React input wrapper for the cep-promise library",
   "author": "matheuskuster",
   "license": "MIT",
   "repository": "matheuskuster/react-cep-promise",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
+  "keywords": ["cep", "cep-promise", "react", "address", "input"],
   "engines": {
     "node": ">=10"
   },
