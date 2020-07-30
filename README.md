@@ -33,7 +33,6 @@ const Example = () => {
 
   return (
     <ReactCepPromise
-      id="cep"
       fetching={fetching}
       onChange={(e) => setCep(e.target.value)}
       onResult={onResult}
