@@ -26,20 +26,23 @@ interface ICep {
   neighborhood: string
 }
 
-interface IProps {
-  shouldFetch?: boolean
+interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   fetching: boolean
-  setFetching: (value: boolean) => any
-  shouldDisableOnFetch?: boolean
+  mask?: string
   onResult: (data: ICep | null, error?: ICepError) => any | void
+  setFetching: React.Dispatch<React.SetStateAction<boolean>>
+  shouldDisableOnFetch?: boolean
+  shouldFetch?: boolean
 }
 
 const ReactCepPromise: React.FC<IProps> = ({
-  shouldFetch = true,
   fetching,
+  mask = '99999-999',
+  onResult,
   setFetching,
   shouldDisableOnFetch = true,
-  onResult
+  shouldFetch = true,
+  ...props
 }) => {
   const [value, setValue] = React.useState<string>('')
 
@@ -67,9 +70,10 @@ const ReactCepPromise: React.FC<IProps> = ({
     <ReactInputMask
       alwaysShowMask={false}
       disabled={shouldDisableOnFetch && fetching}
-      mask='99999-999'
+      mask={mask}
       onChange={onChange}
       value={value}
+      {...props}
     />
   )
 }
