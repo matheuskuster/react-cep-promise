@@ -31,7 +31,7 @@ interface IOnResult {
   error?: ICepError
 }
 
-interface IProps {
+interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   fetching: boolean
   mask?: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
