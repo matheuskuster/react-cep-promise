@@ -26,30 +26,37 @@ interface ICep {
   neighborhood: string
 }
 
-interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface IOnResult {
+  data?: ICep
+  error?: ICepError
+}
+
+interface IProps {
   fetching: boolean
   mask?: string
-  onResult: (data: ICep | null, error?: ICepError) => any | void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onResult: ({ data, error }: IOnResult) => any | void
   setFetching: React.Dispatch<React.SetStateAction<boolean>>
   shouldDisableOnFetch?: boolean
   shouldFetch?: boolean
+  value: string
 }
 
 const ReactCepPromise: React.FC<IProps> = ({
   fetching,
   mask = '99999-999',
+  onChange,
   onResult,
   setFetching,
   shouldDisableOnFetch = true,
   shouldFetch = true,
+  value,
   ...props
 }) => {
-  const [value, setValue] = React.useState<string>('')
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    onChange(event)
 
-  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     const noMask = event.target.value.replace(/[_-]/g, '')
-    setValue(noMask)
-
     if (noMask.length === 8 && !fetching && shouldFetch) handleSearch(noMask)
   }
 
@@ -58,9 +65,9 @@ const ReactCepPromise: React.FC<IProps> = ({
 
     try {
       const result = await cep(formattedValue)
-      onResult(result)
+      onResult({ data: result })
     } catch (error) {
-      onResult(null, error)
+      onResult({ error })
     }
 
     setFetching(false)
@@ -71,7 +78,7 @@ const ReactCepPromise: React.FC<IProps> = ({
       alwaysShowMask={false}
       disabled={shouldDisableOnFetch && fetching}
       mask={mask}
-      onChange={onChange}
+      onChange={handleChange}
       value={value}
       {...props}
     />
@@ -79,4 +86,4 @@ const ReactCepPromise: React.FC<IProps> = ({
 }
 
 export default ReactCepPromise
-export { ICep, ICepError }
+export { ICep, ICepError, IOnResult }
