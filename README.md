@@ -13,16 +13,38 @@ npm install --save react-cep-promise
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React from 'react'
 
-import MyComponent from 'react-cep-promise'
-import 'react-cep-promise/dist/index.css'
+import ReactCepPromise, {IOnResult} from 'react-cep-promise'
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
+const Example = () => {
+  const [fetching, setFetching] = React.useState<boolean>(false);
+  const [cep, setCep] = React.useState<string>('');
+
+  function onResult(result: IOnResult): void {
+    const {data, error} = result
+
+    if (data) {
+      // now you do what you want with the returned value
+    }
+
+    if (error) console.log(error)
   }
+
+  return (
+    <ReactCepPromise
+      id="cep"
+      fetching={fetching}
+      onChange={(e) => setCep(e.target.value)}
+      onResult={onResult}
+      setFetching={setFetching}
+      value={cep}
+    />
+  )
 }
+
+export default Example
+
 ```
 
 ## License
